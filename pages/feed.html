@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Tailwind CSS Modal</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet"> 
+</head>
+<body>
+    <div class="w-full flex flex-row flex-wrap">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+        .round {
+          border-radius: 50%;
+        }
+      </style>
+      
+      
+      <div class="w-full bg-gray-200 h-screen flex flex-row flex-wrap justify-center ">
+        
+        <!-- Begin Navbar -->
+        
+        <div class="flex flex-col w-64 h-screen py-8 bg-white border-r dark:bg-gray-800 dark:border-gray-600">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 dark:text-white">Cinemáticos</h2>
+    
+            <div class="flex flex-col items-center mt-6 -mx-2">
+                <img class="object-cover w-24 h-24 mx-2 rounded-full" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="avatar">
+                <h4 class="mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200 hover:underline">Nome</h4>
+                <p class="mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">@usuário</p>
+            </div>
+            
+            <div class="flex flex-col justify-between flex-1 mt-6">
+                <nav>
+                    <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-200 dark:bg-gray-700 dark:text-gray-200" href="#">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+    
+                        <span class="mx-4 font-medium">Feed</span>
+                    </a>
+    
+                    <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-200 transform dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700" href="#">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+    
+                        <span class="mx-4 font-medium">Seguindo</span>
+                    </a>
+                    
+                    <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-200 transform dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700" href="#">
+                        <i class="fa fa-arrow-right text-gray-600"></i>
+                        <span class="mx-4 font-medium">Sair</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- End Navbar -->
+        
+        <div class="w-full md:w-3/4 lg:w-4/5 p-5 md:px-12 lg:24 h-full overflow-x-scroll antialiased">
+            <nav class="bg-white shadow dark:bg-gray-800">
+                <div class="container px-6 py-3 mx-auto md:flex">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <a class="text-2xl font-bold text-gray-800 transition-colors duration-200 transform dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300" href="#">Home</a>
+                        </div>
+                        
+                        <!-- Mobile menu button -->
+                        <div class="flex md:hidden">
+                            <button type="button" class="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400" aria-label="toggle menu">
+                                <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+                                    <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+        
+                    <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+                    <div class="w-full md:flex md:items-center md:justify-between">
+                        <div class="flex flex-col px-2 py-3 -mx-4 md:flex-row md:mx-0 md:py-0">
+                        </div>
+                        
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+        
+                            <input type="text" class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300" placeholder="Pesquisar">
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="mt-3 flex flex-col"></div>
+          <div class="bg-white w-full shadow p-5">
+            <textarea class="bg-gray-200 w-full rounded-lg shadow border p-2" rows="5" placeholder="Crie seu próprio post!"></textarea>
+            
+            <div class="w-full flex flex-row flex-wrap mt-3">
+              <div class="w-1/3">
+                <button type="button" class="w-full p-2 rounded-lg bg-gray-200 shadow border float-left">Colar imagem</button>
+              </div>
+              <div class="w-2/3">
+                <button type="button" class="float-right bg-indigo-400 hover:bg-indigo-300 text-white p-2 rounded-lg">Postar</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-3 flex flex-col">
+            
+            
+            <div class="bg-white mt-3">
+                <img class="float-left border border-indigo-100 shadow-lg" src="http://lilithaengineering.co.za/wp-content/uploads/2017/08/person-placeholder.jpg" width="70" height="90">
+                <div class="bg-white border shadow p-5 text-xl text-gray-700 font-semibold">
+                    Meu filme favorito.
+                  </div>
+              <img class="border rounded-t-lg shadow-lg " src="https://images.unsplash.com/photo-1572817519612-d8fadd929b00?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+              <div class="bg-white p-1 border shadow flex flex-row flex-wrap">
+                <div class="w-1/3 hover:bg-gray-200 text-center text-xl text-gray-700 font-semibold">Curtir</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 border-r- text-center text-xl text-gray-700 font-semibold">Comentar</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 text-center text-xl text-gray-700 font-semibold">Seguir</div>
+              </div>
+              
+              <div class="bg-white border-4 bg-gray-300 border-white rounded-b-lg shadow p-5 text-xl text-gray-700 content-center font-semibold flex flex-row flex-wrap">
+                <div class="w-full">
+                  <div class="w-full text-left text-xl text-gray-600">
+                    @Usuário
+                  </div>
+                  Também amo esse filme.
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white mt-3">
+                <img class="float-left border border-indigo-100 shadow-lg" src="http://lilithaengineering.co.za/wp-content/uploads/2017/08/person-placeholder.jpg" width="70" height="90">
+                <div class="bg-white border shadow p-5 text-xl text-gray-700 font-semibold">
+                    Meu filme favorito.
+                  </div>
+              <img class="border rounded-t-lg shadow-lg " src="https://images.unsplash.com/photo-1572817519612-d8fadd929b00?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+              <div class="bg-white p-1 border shadow flex flex-row flex-wrap">
+                <div class="w-1/3 hover:bg-gray-200 text-center text-xl text-gray-700 font-semibold">Curtir</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 border-r- text-center text-xl text-gray-700 font-semibold">Comentar</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 text-center text-xl text-gray-700 font-semibold">Seguir</div>
+              </div>
+            </div>
+            
+            <div class="bg-white mt-3">
+                <img class="float-left border border-indigo-100 shadow-lg" src="http://lilithaengineering.co.za/wp-content/uploads/2017/08/person-placeholder.jpg" width="70" height="90">
+                <div class="bg-white border shadow p-5 text-xl text-gray-700 font-semibold">
+                    Meu filme favorito.
+                  </div>
+              <img class="border rounded-t-lg shadow-lg " src="https://images.unsplash.com/photo-1572817519612-d8fadd929b00?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+              <div class="bg-white p-1 border shadow flex flex-row flex-wrap">
+                <div class="w-1/3 hover:bg-gray-200 text-center text-xl text-gray-700 font-semibold">Curtir</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 border-r- text-center text-xl text-gray-700 font-semibold">Comentar</div>
+                <div class="w-1/3 hover:bg-gray-200 border-l-4 text-center text-xl text-gray-700 font-semibold">Seguir</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      </div>
+</body>
+</html>
