@@ -10,8 +10,17 @@ from django.utils.translation import gettext_lazy as _
 from core.models import User
 
 
-def redirect_logged_in():
+def logged_in_redirect():
     return redirect('https://gitlab.com')
+
+
+def login_redirect(*args, **kwargs):
+    return redirect(reverse_lazy('login'))
+
+
+def logout(request: HttpRequest, *args, **kwargs):
+    request.session.clear()
+    return login_redirect()
 
 
 class LoginView(generic.TemplateView):
@@ -22,13 +31,9 @@ class LoginView(generic.TemplateView):
     }
 
     def get(self, request: HttpRequest, *args, **kwargs):
-        # Simple logout mechanism
-        if 'logout' in request.GET:
-            request.session.clear()
-
         # Check for already logged-in user
         if 'username' in request.session:
-            return redirect_logged_in()
+            return logged_in_redirect()
 
         context = {
             **self.extra_context,
@@ -56,7 +61,7 @@ class LoginView(generic.TemplateView):
 
             # Automatically logins user
             request.session['username'] = user.username
-            return redirect_logged_in()
+            return logged_in_redirect()
         except Exception as ex:
             print(repr(ex))
             # Something went wrong
@@ -105,7 +110,7 @@ class SignupView(generic.TemplateView):
             # Automatically logins user
             request.session['username'] = new_user.username
 
-            return redirect_logged_in()
+            return logged_in_redirect()
         except Exception as ex:
             print(repr(ex))
             # Something went wrong
