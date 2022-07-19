@@ -9,17 +9,18 @@ from django.utils.translation import gettext_lazy as _
 class UserManager(BaseUserManager):
     validate_username = ASCIIUsernameValidator()
 
-    def create_user(self, username: str = None, email: str = None, password: str = None, first_name: str = None, last_name: str = None, **extra_fields):
-        if not username:
-            raise ValidationError(_('Nome de usuário é obrigatório'))
-        if not email:
-            raise ValidationError(_('E-mail é obrigatório'))
-        if not password:
-            raise ValidationError(_('Senha é obrigatória'))
+    def create_user(self, username: str = None, email: str = None, password: str = None,
+                    first_name: str = None, last_name: str = None, **extra_fields):
         if not first_name:
-            raise ValidationError(_('Primeiro nome é obrigatório'))
+            raise ValidationError(_('primeiro nome é obrigatório'))
         if not last_name:
-            raise ValidationError(_('Sobrenome é obrigatório'))
+            raise ValidationError(_('sobrenome é obrigatório'))
+        if not username:
+            raise ValidationError(_('nome de usuário é obrigatório'))
+        if not email:
+            raise ValidationError(_('e-mail é obrigatório'))
+        if not password:
+            raise ValidationError(_('senha é obrigatória'))
 
         validate_password(password)
         self.validate_username(username)
