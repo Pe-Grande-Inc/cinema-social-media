@@ -5,7 +5,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, [])
+    ALLOWED_HOSTS=(list, []),
+    STATIC_URL=(str, "static/")
 )
 
 # Dynamic config
@@ -13,6 +14,7 @@ env = Env(
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+STATIC_URL = env('STATIC_URL')
 
 DATABASES = {
     'default': env.db()
@@ -56,6 +58,9 @@ TEMPLATES = [
         },
     },
 ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
 WSGI_APPLICATION = 'cinema_social_media.wsgi.application'
 
@@ -84,8 +89,4 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_REDIRECT_URL = "/"
