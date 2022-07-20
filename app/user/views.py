@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import generic
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.utils.translation import gettext_lazy as _
 
@@ -18,8 +19,8 @@ def login_redirect(*args, **kwargs):
     return redirect(reverse_lazy('login'))
 
 
-def logout(request: HttpRequest, *args, **kwargs):
-    request.session.clear()
+def logout_view(request: HttpRequest, *args, **kwargs):
+    logout(request)
     return login_redirect()
 
 
@@ -32,13 +33,14 @@ class LoginView(generic.TemplateView):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         # Check for already logged-in user
-        if 'username' in request.session:
+        if request.user.is_authenticated:
             return logged_in_redirect()
 
         context = {
             **self.extra_context,
             'error': True if 'error' in request.GET else False,
         }
+
         return self.render_to_response(context)
 
     def post(self, request: HttpRequest, *args, **kwargs):
@@ -53,14 +55,16 @@ class LoginView(generic.TemplateView):
                 raise ValidationError(_('o campo de senha é obrigatório'))
 
             # Search for target user
-            user = User.objects.get(username=request.POST['username'])
+            user = authenticate(request, username=request.POST['username'],
+                                password=request.POST['password'])
 
-            # Check for password match
-            if not user.check_password(request.POST['password']):
-                raise ValidationError(_('senha inválida'))
+            # Check for authentication failure
+            if user is None:
+                raise ValidationError(_('credenciais inválidas'))
 
-            # Automatically logins user
-            request.session['username'] = user.username
+            # Persist user session
+            login(request, user)
+
             return logged_in_redirect()
         except Exception as ex:
             print(repr(ex))
@@ -73,10 +77,6 @@ class LoginView(generic.TemplateView):
             # Add error msg for validation errors
             if isinstance(ex, ValidationError):
                 context['error_msg'] = ex.message
-
-            # Check if user is present on DB
-            if isinstance(ex, ObjectDoesNotExist):
-                context['error_msg'] = _('usuário não encontrado')
 
             return self.render_to_response(context, status=400)
 
@@ -107,8 +107,8 @@ class SignupView(generic.TemplateView):
                                 fields if field_name in request.POST}
             new_user: User = User.objects.create_user(**creation_payload)
 
-            # Automatically logins user
-            request.session['username'] = new_user.username
+            # Automatically logs-in user
+            login(request, new_user)
 
             return logged_in_redirect()
         except Exception as ex:
