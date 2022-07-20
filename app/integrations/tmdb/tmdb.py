@@ -24,6 +24,27 @@ class TMDBAuthVersion(IntEnum):
 
 
 class TMDB:
+    configuration = {
+        "base_url": "https://image.tmdb.org/t/p/",
+        "backdrop_sizes": [
+            "w300",
+            "w780",
+            "w1280",
+            "original"
+        ],
+        "base_backdrop_url": "https://image.tmdb.org/t/p/original/",
+        "poster_sizes": [
+            "w92",
+            "w154",
+            "w185",
+            "w342",
+            "w500",
+            "w780",
+            "original"
+        ],
+        "base_poster_url": "https://image.tmdb.org/t/p/original/",
+    }
+
     def __init__(self, api_key: str = None,
                  auth_version: TMDBAuthVersion = TMDBAuthVersion.AUTH_V4,
                  host: str = None,
@@ -49,7 +70,7 @@ class TMDB:
     def _execute_request(self, resource_name, payload=None):
         url = f'{self._host}{self._resources[resource_name]}'
         headers = {}
-        query_params = {**payload}
+        query_params = {'language': 'pt-BR', **payload}
 
         if self._auth_version is TMDBAuthVersion.AUTH_V4:
             headers['Authorization'] = f'Bearer {self._api_key}'

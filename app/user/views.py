@@ -11,6 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from core.models import User
 
 
+# Redirects
+
 def logged_in_redirect():
     return redirect('https://gitlab.com')
 
@@ -18,6 +20,8 @@ def logged_in_redirect():
 def login_redirect(*args, **kwargs):
     return redirect(reverse_lazy('login'))
 
+
+# Views
 
 def logout_view(request: HttpRequest, *args, **kwargs):
     logout(request)

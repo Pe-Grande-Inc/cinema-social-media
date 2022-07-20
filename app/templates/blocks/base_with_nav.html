@@ -1,0 +1,14 @@
+{% extends 'blocks/base.html' %}
+
+{% block root_content %}
+    <div class="w-full flex flex-row flex-wrap">
+        <div class="w-full bg-gray-200 h-screen flex flex-row float-left ">
+
+            {% include 'blocks/nav.html' %}
+
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
