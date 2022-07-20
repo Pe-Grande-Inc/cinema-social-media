@@ -12,7 +12,6 @@
                     </div>
                 </div>
 
-                <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
                 <div class="w-full md:flex md:items-center md:justify-between">
                     <div
                         class="flex flex-col px-2 py-3 -mx-4 md:flex-row md:mx-0 md:py-0">
@@ -31,14 +30,41 @@
                                 </svg>
                             </span>
 
-                        <input type="text"
-                               class="w-full py-2 pl-10 pr-4 border rounded-md bg-gray-800 text-gray-300 border-gray-600 focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
-                               placeholder="Pesquisar">
+                        <form method="get" action="{{ search_url }}">
+                            <input type="text" name="query"
+                                   value="{{ query }}"
+                                   class="w-full py-2 pl-10 pr-4 border rounded-md bg-gray-800 text-gray-300 border-gray-600 focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
+                                   placeholder="Pesquisar">
+                        </form>
                     </div>
                 </div>
             </div>
         </nav>
 
+        <div class="flex align-center justify-center mt-3">
+            {% if previous_page_url %}
+                <a class="mx-2 text-indigo-500 border-b-2 border-indigo-500"
+                   href="{{ previous_page_url }}">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <span class="font-semibold">
+                    Anterior
+                </span>
+                </a>
+            {% endif %}
+            {% if next_page_url %}
+                <a class="mx-2 text-indigo-500 border-b-2 border-indigo-500"
+                   href="{{ next_page_url }}">
+                <span class="font-semibold">
+                    Próximo
+                </span>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% if not titles %}
+            <p class="text-center text-xl text-indigo-500">Nenhum resultado
+                encontrado :(</p>
+        {% endif %}
         {% for title in titles %}
             <!-- Post -->
             <div class="bg-white mt-3">
@@ -48,9 +74,11 @@
                             <!-- Image -->
                             <div
                                 class="lg:w-1/2 lg:h-auto object-cover object-center flex flex-grow">
-                                <img alt="ecommerce"
-                                     class="grow-0 max-w-full max-h-full w-full m-auto rounded"
-                                     src="{{ title.poster_url }}">
+                                {% if title.poster_url %}
+                                    <img alt="poster"
+                                         class="grow-0 max-w-full max-h-full w-full m-auto rounded"
+                                         src="{{ title.poster_url }}">
+                                {% endif %}
                             </div>
                             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                                 <!-- Film name with TMDB link -->
@@ -157,5 +185,25 @@
                 </section>
             </div>
         {% endfor %}
+        <div class="flex align-center justify-center mt-3">
+            {% if previous_page_url %}
+                <a class="mx-2 text-indigo-500 border-b-2 border-indigo-500"
+                   href="{{ previous_page_url }}">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <span class="font-semibold">
+                    Anterior
+                </span>
+                </a>
+            {% endif %}
+            {% if next_page_url %}
+                <a class="mx-2 text-indigo-500 border-b-2 border-indigo-500"
+                   href="{{ next_page_url }}">
+                <span class="font-semibold">
+                    Próximo
+                </span>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

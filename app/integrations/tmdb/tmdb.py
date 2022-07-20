@@ -5,6 +5,11 @@ import requests
 
 TMDB_RESOURCES = {
     'multi-search': '/search/multi',
+    'tv-search': '/search/tv',
+    'movie-search': '/search/movie',
+
+    'tv-discover': '/discover/tv',
+    'movie-discover': '/discover/movie',
 
     'movie-details': '/movie/%s',
     'movie-keywords': '/movie/%s/keywords',
@@ -79,10 +84,77 @@ class TMDB:
 
         return requests.get(url, params=query_params, headers=headers, timeout=30)
 
-    def search(self, query, page=1):
+    def search_tv(self, query, page=1):
+        response = self._execute_request('tv-search', {'query': query, 'page': page})
+
+        if response.status_code != 200:
+            raise Exception('Failed to retrieve search results')
+
+        return response.json()
+
+    def search_movie(self, query, page=1):
+        response = self._execute_request('movie-search', {'query': query, 'page': page})
+
+        if response.status_code != 200:
+            raise Exception('Failed to retrieve search results')
+
+        return response.json()
+
+    def discover_tv(self, page=1):
+        response = self._execute_request('tv-discover', {'page': page})
+
+        if response.status_code != 200:
+            raise Exception('Failed to retrieve search results')
+
+        return response.json()
+
+    def discover_movie(self, page=1):
+        response = self._execute_request('movie-discover', {'page': page})
+
+        if response.status_code != 200:
+            raise Exception('Failed to retrieve search results')
+
+        return response.json()
+
+    def search_multi(self, query, page=1):
         response = self._execute_request('multi-search', {'query': query, 'page': page})
 
         if response.status_code != 200:
             raise Exception('Failed to retrieve search results')
 
         return response.json()
+
+    @staticmethod
+    def _aggregate(response_tv, response_movie):
+        merged_results = []
+
+        for tv_title in response_tv.get('results', []):
+            tv_title['media_type'] = 'tv'
+            merged_results.append(tv_title)
+
+        for movie_title in response_movie.get('results', []):
+            movie_title['media_type'] = 'movie'
+            merged_results.append(movie_title)
+
+        aggregate = {
+            'page': max(response_tv.get('page', 1), response_movie.get('page', 1)),
+            'results': merged_results,
+            'total_pages': max(response_tv.get('total_pages', 1),
+                               response_movie.get('total_pages', 1)),
+            'total_results': response_tv.get('total_results', 0) +
+                             response_movie.get('total_results', 0),
+        }
+
+        return aggregate
+
+    def search(self, query, page=1):
+        response_tv = self.search_tv(query, page)
+        response_movie = self.search_movie(query, page)
+
+        return self._aggregate(response_tv, response_movie)
+
+    def discover(self, page=1):
+        response_tv = self.discover_tv(page)
+        response_movie = self.discover_movie(page)
+
+        return self._aggregate(response_tv, response_movie)

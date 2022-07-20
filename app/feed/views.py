@@ -1,12 +1,6 @@
-from django.shortcuts import render, redirect
-
-from django.http import HttpResponse, HttpRequest
-from django.views import generic
+from django.http import HttpRequest
 from django.urls import reverse_lazy
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
-from django.utils.translation import gettext_lazy as _
+from django.views import generic
 
 from core.models import Title
 from integrations.tmdb import TMDB
@@ -24,7 +18,8 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
         "user_avatar_url": request.user.avatar_url,
         # 'feed_url': reverse_lazy('feed'),
         # 'follow_url': reverse_lazy('follow'),
-        # 'post_url': reverse_lazy('post'),
+        'post_url': reverse_lazy('search'),
+        'search_url': reverse_lazy('search'),
         'logout_url': reverse_lazy('logout'),
         **kwargs
     }
@@ -37,23 +32,38 @@ class SearchMoviesView(generic.TemplateView):
         if not request.user.is_authenticated:
             return login_redirect(unauthorized=True)
 
-        base_context = load_base_context(request, page_title="Busca")
-
-        # No search query (may show popular movies here by defaul)
-        if 'query' not in request.GET:
-            return self.render_to_response({**base_context, 'titles': []})
+        base_context = load_base_context(request, page_title="Busca",
+                                         active_tab='search')
 
         # Try loading movies for the given query
         try:
-            query = request.GET['query']
+            query = request.GET['query'] if 'query' in request.GET else None
             page = int(str(request.GET['page'])) if 'page' in request.GET else 1
-            search_response = tmdb.search(query, page=page)
+
+            if query:
+                # If query is present show search results
+                search_response = tmdb.search(query, page=page)
+            else:
+                # If query is not present, show popular movies/tv shows
+                search_response = tmdb.discover(page=page)
+
+            next_page_url = None
+            if search_response.get('total_pages', 1) > page:
+                next_page_url = f'{request.path}?query={query}&page={page + 1}'
+
+            previous_page_url = None
+            if page != 1:
+                previous_page_url = f'{request.path}?query={query}&page={page - 1}'
+
             titles = list(Title.objects.load_from_tmdb(search_response['results']))
-            titles.sort(key=lambda x: -x.vote_average)
-            return self.render_to_response({**base_context, 'titles': titles})
+            titles.sort(key=lambda x: -x.popularity)
+
+            return self.render_to_response(
+                {**base_context, 'titles': titles, 'next_page_url': next_page_url,
+                 'previous_page_url': previous_page_url, 'query': query})
 
         except ValueError as ex:
-            print(ex)
+            print(repr(ex))
             context = {
                 **base_context,
                 'error': True

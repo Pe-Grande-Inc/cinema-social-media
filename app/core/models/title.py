@@ -9,12 +9,12 @@ from integrations.tmdb import TMDB
 
 
 class TitleManager(models.Manager):
-    def parse_tmdb_movie(self, movie):
+    def parse_tmdb_movie(self, movie: dict):
         try:
             if 'media_type' not in movie or movie['media_type'] not in ('tv', 'movie'):
                 return None
 
-            if movie['vote_count'] < 10:
+            if 'vote_count' not in movie:
                 return None
 
             if 'adult' in movie and movie['adult']:
@@ -22,9 +22,10 @@ class TitleManager(models.Manager):
 
             model_args = {
                 "tmdb_id": movie['id'],
-                "name": movie['title'],
-                "overview": movie['overview'],
+                "name": movie.get('title', movie.get('name', None)),
+                "overview": movie.get('overview', None),
                 "vote_average": movie['vote_average'],
+                "popularity": movie['popularity'],
                 "external_url": f"https://www.themoviedb.org/{movie['media_type']}/{movie['id']}"
             }
 
@@ -52,6 +53,8 @@ class TitleManager(models.Manager):
         results = Title.objects.filter(tmdb_id__in=titles_by_tmdb_id)
         results_by_tmdb_id = {title.tmdb_id: title for title in results}
 
+        final_titles = []
+
         for title in parsed_titles:
             if title.tmdb_id in results_by_tmdb_id:
                 db_title = results_by_tmdb_id[title.tmdb_id]
@@ -61,11 +64,13 @@ class TitleManager(models.Manager):
                 db_title.backdrop_url = title.backdrop_url
                 db_title.poster_url = title.poster_url
                 db_title.external_url = title.external_url
+                db_title.popularity = title.popularity
                 db_title.save()
+                final_titles.append(db_title)
             else:
-                title.save()
+                final_titles.append(title)
 
-        return results
+        return final_titles
 
 
 class Title(models.Model):
@@ -85,6 +90,7 @@ class Title(models.Model):
                             help_text=_('Nome do filme/série'))
     overview = models.TextField()
     vote_average = models.FloatField(verbose_name=_('média dos votos'))
+    popularity = models.FloatField(verbose_name=_('popularidade do título'))
 
     creation_date = models.DateTimeField(auto_now_add=True,
                                          verbose_name=_('data de criação'),

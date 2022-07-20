@@ -19,7 +19,7 @@
         <nav>
             <a
                 {% if active_tab == 'feed' %}
-                    class="flex items-center px-4 py-2 bg-gray-700 text-gray-200"
+                    class="flex items-center px-4 py-2 mt-5 bg-gray-700 text-gray-200"
                 {% else %}
                     class="flex items-center px-4 py-2 mt-5 transition-colors duration-200 transform text-gray-400 hover:bg-gray-700 hover:text-gray-200"
                 {% endif %}
@@ -30,7 +30,7 @@
 
             <a
                 {% if active_tab == 'follow' %}
-                    class="flex items-center px-4 py-2 bg-gray-700 text-gray-200"
+                    class="flex items-center px-4 py-2 mt-5 bg-gray-700 text-gray-200"
                 {% else %}
                     class="flex items-center px-4 py-2 mt-5 transition-colors duration-200 transform text-gray-400 hover:bg-gray-700 hover:text-gray-200"
                 {% endif %}
@@ -40,8 +40,19 @@
             </a>
 
             <a
+                {% if active_tab == 'search' %}
+                    class="flex items-center px-4 py-2 mt-5 bg-gray-700 text-gray-200"
+                {% else %}
+                    class="flex items-center px-4 py-2 mt-5 transition-colors duration-200 transform text-gray-400 hover:bg-gray-700 hover:text-gray-200"
+                {% endif %}
+                    href="{{ search_url }}">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <span class="mx-4 font-medium">Busca/Descoberta</span>
+            </a>
+
+            <a
                 {% if active_tab == 'post' %}
-                    class="flex items-center px-4 py-2 bg-gray-700 text-gray-200"
+                    class="flex items-center px-4 py-2 mt-5 bg-gray-700 text-gray-200"
                 {% else %}
                     class="flex items-center px-4 py-2 mt-5 transition-colors duration-200 transform text-gray-400 hover:bg-gray-700 hover:text-gray-200"
                 {% endif %}
@@ -52,13 +63,13 @@
 
             <a
                 {% if active_tab == 'logout' %}
-                    class="flex items-center px-4 py-2 bg-gray-700 text-gray-200"
+                    class="flex items-center px-4 py-2 mt-5 bg-gray-700 text-gray-200"
                 {% else %}
                     class="flex items-center px-4 py-2 mt-5 transition-colors duration-200 transform text-gray-400 hover:bg-gray-700 hover:text-gray-200"
                 {% endif %}
                     href="{{ logout_url }}">
-                <i class="fa fa-arrow-right text-gray-600"></i>
-                <span class="mx-4 font-medium">Sair</span>
+                <i class="fa fa-sign-out text-gray-500"></i>
+                <span class="mx-4 font-medium text-gray-500">Sair</span>
             </a>
         </nav>
     </div>
