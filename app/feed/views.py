@@ -21,6 +21,7 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
         'page_title': page_title,
         'username': request.user.username,
         'user_fullname': request.user.get_full_name(),
+        "user_avatar_url": request.user.avatar_url,
         # 'feed_url': reverse_lazy('feed'),
         # 'follow_url': reverse_lazy('follow'),
         # 'post_url': reverse_lazy('post'),

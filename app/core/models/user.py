@@ -1,3 +1,5 @@
+from hashlib import md5
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.validators import ASCIIUsernameValidator
@@ -63,4 +65,8 @@ class User(AbstractUser):
         verbose_name = _('usuário')
         verbose_name_plural = _('usuários')
 
-    pass
+    @property
+    def avatar_url(self):
+        email_hash = md5(self.email.strip().lower().encode("utf-8"))
+        email_hash_hex = email_hash.hexdigest()
+        return f"https://www.gravatar.com/avatar/{email_hash_hex}?d=identicon"
