@@ -13,9 +13,9 @@ class Post(models.Model):
     author = models.ForeignKey('User', on_delete=models.CASCADE,
                                verbose_name=_('autor'), help_text=_('Autor do Post'),
                                related_name='posts', related_query_name='post')
-    movie_id = models.IntegerField(null=False, editable=True,
-                                   verbose_name=_('id do filme'), help_text=_(
-            'ID do filme/série que o filme se trata'))
+    movie = models.ForeignKey('Title', on_delete=models.CASCADE,
+                              verbose_name=_('filme'), help_text=_('Filme do Post'),
+                              related_name='posts', related_query_name='post')
     content = models.TextField(null=False, editable=True, verbose_name=_('conteúdo'),
                                validators=[MaxLengthValidator(MAX_POST_LENGTH),
                                            MinLengthValidator(1)],

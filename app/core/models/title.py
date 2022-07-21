@@ -3,6 +3,7 @@ from typing import List
 from urllib.parse import urljoin
 
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from integrations.tmdb import TMDB
@@ -68,6 +69,7 @@ class TitleManager(models.Manager):
                 db_title.save()
                 final_titles.append(db_title)
             else:
+                title.save()
                 final_titles.append(title)
 
         return final_titles
@@ -104,3 +106,7 @@ class Title(models.Model):
 
     def __str__(self):
         return f'{self.id}/{self.tmdb_id} - {self.name}'
+
+    @property
+    def create_post_url(self):
+        return reverse_lazy('new-post', kwargs={'title_id': str(self.id)})

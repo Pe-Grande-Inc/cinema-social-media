@@ -1,8 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.http import HttpRequest
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from core.models import Title
+from core.models import Title, Post
 from integrations.tmdb import TMDB
 from user.views import login_redirect
 
@@ -26,13 +28,59 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
 
 
 class CreatePostView(generic.TemplateView):
-    template_name = 'create_post.html'
+    template_name = 'new_post.html'
 
-    def get(self, request, *args, **kwargs):
-        pass
+    def get(self, request: HttpRequest, title_id=None, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return login_redirect(unauthorized=True)
 
-    def post(self, request, movie_id=None, *args, **kwargs):
-        pass
+        # Go to search page if title is missing
+        if title_id is None:
+            return redirect(reverse_lazy('search'))
+
+        base_context = load_base_context(request, page_title="Novo post",
+                                         active_tab="post")
+
+        try:
+            title = Title.objects.get(id=title_id)
+            return self.render_to_response({**base_context, 'title': title})
+
+        except (ValidationError, Title.DoesNotExist) as ex:
+            print(repr(ex))
+            return redirect(reverse_lazy('search'))
+
+    def post(self, request, title_id=None, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return login_redirect(unauthorized=True)
+
+        # Go to search page if title is missing
+        if title_id is None:
+            return redirect(reverse_lazy('search'))
+
+        base_context = load_base_context(request, page_title="Novo post",
+                                         active_tab="post")
+
+        try:
+            title = Title.objects.get(id=title_id)
+        except (ValidationError, Title.DoesNotExist) as ex:
+            print(repr(ex))
+            return redirect(reverse_lazy('search'))
+
+        try:
+            if 'content' not in request.POST or not request.POST['content'].strip():
+                raise ValidationError("Post vazio")
+
+            post = Post.objects.create(
+                author=self.request.user,
+                movie=title,
+                content=request.POST['content'].strip()
+            )
+
+            return redirect(reverse_lazy('search') + "?query=ok")
+        except ValidationError as ex:
+            return self.render_to_response(
+                {**base_context, 'title': title, 'error': True,
+                 'error_msg': ex.message}, status=400)
 
 
 class SearchMoviesView(generic.TemplateView):
