@@ -14,7 +14,7 @@ from core.models import User
 # Redirects
 
 def logged_in_redirect():
-    return redirect('https://gitlab.com')
+    return redirect(reverse_lazy('search'))
 
 
 def login_redirect(*args, **kwargs):

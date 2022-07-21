@@ -25,6 +25,16 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
     }
 
 
+class CreatePostView(generic.TemplateView):
+    template_name = 'create_post.html'
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, movie_id=None, *args, **kwargs):
+        pass
+
+
 class SearchMoviesView(generic.TemplateView):
     template_name = 'search.html'
 
@@ -49,11 +59,15 @@ class SearchMoviesView(generic.TemplateView):
 
             next_page_url = None
             if search_response.get('total_pages', 1) > page:
-                next_page_url = f'{request.path}?query={query}&page={page + 1}'
+                next_page_url = f'{request.path}?page={page + 1}'
+                if query:
+                    next_page_url += f'&query={query}'
 
             previous_page_url = None
             if page != 1:
-                previous_page_url = f'{request.path}?query={query}&page={page - 1}'
+                previous_page_url = f'{request.path}?page={page - 1}'
+                if query:
+                    previous_page_url += f'&query={query}'
 
             titles = list(Title.objects.load_from_tmdb(search_response['results']))
             titles.sort(key=lambda x: -x.popularity)
