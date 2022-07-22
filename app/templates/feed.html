@@ -150,10 +150,18 @@
                                     <a href="{{ post.post_details_url }}"
                                        target="_blank">
                                         <div class="flex">
-                                            <button style="font-size:24px"><i
+                                            <button style="font-size:24px"
+                                                {% if post.id in liked_ids %}
+                                                    class="text-indigo-600"
+                                                {% endif %}
+                                            ><i
                                                 class="fa fa-thumbs-up p-2"></i>{{ post.like_count }}
                                             </button>
-                                            <button style="font-size:24px"><i
+                                            <button style="font-size:24px"
+                                                {% if post.id in disliked_ids %}
+                                                    class="text-indigo-600"
+                                                {% endif %}
+                                            ><i
                                                 class="fa fa-thumbs-down p-2"></i>{{ post.dislike_count }}
                                             </button>
 

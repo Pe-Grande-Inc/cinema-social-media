@@ -66,6 +66,26 @@ that, run:
 python manage.py runserver
 ```
 
+## Docker
+
+If you prefer, you can skip the pipenv configuration (.env will still be needed, at 
+least for the API keys) and use docker-compose instead. For that, simply run:
+
+```bash
+# Turn on the containers detached from terminal
+docker-compose up --build -d
+
+# To see the logs, use
+docker-compose logs --follow
+```
+
+To shut the app down, use:
+
+```bash
+# Shuts down the containers, add -v to also delete the database data
+docker-compose down
+```
+
 ## Improvements
 
 Due to the timelines, we had to sacrifice some things we'd like to implement, namely:
@@ -79,7 +99,3 @@ Due to the timelines, we had to sacrifice some things we'd like to implement, na
       user.
 3. Implement actual i18n support for both pt-BR and en-US. Currently, only pt-BR is
    available.
-4. Make it ready to deploy
-    - The last thing that is missing, is finishing the setup to make the application
-      easily deployable on cloud, things like: Docker and automatic CI/CD weren't
-      implemented.

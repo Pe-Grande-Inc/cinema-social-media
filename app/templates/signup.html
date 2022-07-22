@@ -1,28 +1,26 @@
 {% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Cinemáticos - Signup</title>
 </head>
 <body>
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div
-        class="px-8 py-6 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
+        class="px-8 py-6 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3"
+    >
         <h3 class="text-2xl font-bold text-center">Registrar</h3>
 
         {% if error %}
             <div class="px-4 py-2 my-4 bg-red-400 opacity-80">
                 <p class="text-xl text-center text-zinc-100">
                     <strong>Erro:</strong>
-                    {% if not error_msg %}
-                        as informações inseridas são inválidas.
-                    {% else %}
-                        {{ error_msg }}
-                    {% endif %}
+                    {% if not error_msg %} as informações inseridas são inválidas.
+                    {% else %} {{ error_msg }} {% endif %}
                 </p>
             </div>
         {% endif %}
@@ -32,43 +30,69 @@
             <div class="mt-4">
                 <div>
                     <label class="block" for="first-name-input">Nome</label>
-                    <input type="text" placeholder="Nome" name="first_name"
-                           id="first-name-input"
-                           class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <input
+                        type="text"
+                        placeholder="Nome"
+                        name="first_name"
+                        id="first-name-input"
+                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    />
                 </div>
                 <div class="mt-4">
                     <label class="block" for="last-name-input">Sobrenome</label>
-                    <input type="text" placeholder="Sobrenome" name="last_name"
-                           id="last-name-input"
-                           class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <input
+                        type="text"
+                        placeholder="Sobrenome"
+                        name="last_name"
+                        id="last-name-input"
+                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    />
                 </div>
                 <div class="mt-4">
                     <label class="block" for="email-input">Email</label>
-                    <input type="email" placeholder="Email" name="email"
-                           id="email-input"
-                           class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        id="email-input"
+                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    />
                 </div>
                 <div class="mt-4">
-                    <label class="block" for="username-input">Nome de Usuário</label>
-                    <input type="text" placeholder="Usuário" name="username"
-                           id="username-input"
-                           class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <label class="block" for="username-input"
+                    >Nome de Usuário</label
+                    >
+                    <input
+                        type="text"
+                        placeholder="Usuário"
+                        name="username"
+                        id="username-input"
+                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    />
                 </div>
                 <div class="mt-4">
                     <label class="block" for="password-input">Senha</label>
-                    <input type="password" placeholder="Senha" name="password"
-                           id="password-input"
-                           class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        name="password"
+                        id="password-input"
+                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    />
                 </div>
                 <div class="flex">
                     <button
-                        class="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">
+                        class="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900"
+                    >
                         Criar uma Conta
                     </button>
                 </div>
                 <div class="mt-6 text-grey-dark">
                     Já possui uma conta?
-                    <a class="text-blue-600 hover:underline" href="{{ login_url }}">
+                    <a
+                        class="text-blue-600 hover:underline"
+                        href="{{ login_url }}"
+                    >
                         Entrar
                     </a>
                 </div>
@@ -76,7 +100,5 @@
         </form>
     </div>
 </div>
-
-<script src="{% static 'common.js' %}"></script>
 </body>
 </html>

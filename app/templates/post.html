@@ -127,7 +127,11 @@
                                     <form action="{{ post.post_like_url }}"
                                           method="post">
                                         {% csrf_token %}
-                                        <button type="submit" style="font-size:24px"><i
+                                        <button type="submit" style="font-size:24px"
+                                            {% if liked %}
+                                                class="text-indigo-600"
+                                            {% endif %}
+                                        ><i
                                             class="fa fa-thumbs-up p-2"></i>{{ post.like_count }}
                                         </button>
                                     </form>
@@ -135,7 +139,11 @@
                                           method="post">
                                         {% csrf_token %}
                                         <input name="dislike" value="1" hidden>
-                                        <button type="submit" style="font-size:24px"><i
+                                        <button type="submit" style="font-size:24px"
+                                            {% if disliked %}
+                                                class="text-indigo-600"
+                                            {% endif %}
+                                        ><i
                                             class="fa fa-thumbs-down p-2"></i>{{ post.dislike_count }}
                                         </button>
                                     </form>

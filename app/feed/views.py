@@ -1,16 +1,15 @@
-from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
-from django.shortcuts import redirect
 from django.db import IntegrityError
-from django.urls import reverse_lazy
 from django.http import HttpRequest
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from core.models import Title, Post, User, PostRating, Comment
-from user.views import login_redirect
-
 from integrations.tmdb import TMDB
+from user.views import login_redirect
 
 tmdb = TMDB()
 
@@ -57,6 +56,16 @@ class BasePostView(generic.TemplateView):
             # If post was not found, redirect to feed
             return redirect(reverse_lazy('feed'))
 
+        # Retrieve if post is liked by user or not
+        try:
+            rating = post.ratings.get(user=request.user)
+            if rating.positive:
+                base_context['liked'] = True
+            else:
+                base_context['disliked'] = True
+        except PostRating.DoesNotExist:
+            pass
+
         # Render post screen
         return self.render_to_response({**base_context, 'post': post})
 
@@ -98,12 +107,22 @@ class LikePostView(BasePostView):
             if rating.positive != rating_positive:
                 rating.positive = rating_positive
                 rating.save()
+                # Define if liked or not
+                if rating.positive:
+                    base_context['liked'] = True
+                else:
+                    base_context['disliked'] = True
             else:
                 rating.delete()
         except PostRating.DoesNotExist:
             # If it's the user's first rating, create it
             rating = PostRating.objects.create(post=post, user=request.user,
                                                positive=rating_positive)
+            # Define if liked or not
+            if rating.positive:
+                base_context['liked'] = True
+            else:
+                base_context['disliked'] = True
 
         # Render post screen
         return self.render_to_response({**base_context, 'post': post})
@@ -138,6 +157,16 @@ class CommentPostView(BasePostView):
         # Create comment
         comment = Comment.objects.create(author=request.user, post=post,
                                          content=request.POST['content'])
+
+        # Retrieve if post is liked by user or not
+        try:
+            rating = post.ratings.get(user=request.user)
+            if rating.positive:
+                base_context['liked'] = True
+            else:
+                base_context['disliked'] = True
+        except PostRating.DoesNotExist:
+            pass
 
         # Render post screen
         return self.render_to_response({**base_context, 'post': post})
@@ -273,10 +302,17 @@ class FeedView(generic.TemplateView):
             if filters['movie_id']:
                 previous_page_url += f'&title={filters["movie_id"]}'
 
+        # Load liked/disliked posts
+        ratings = [rating for rating in
+                   request.user.ratings.all().only('post_id', 'positive')]
+        liked_ids = {rating.post_id for rating in ratings if rating.positive}
+        disliked_ids = {rating.post_id for rating in ratings if not rating.positive}
+
         # Render response
         return self.render_to_response(
             {**base_context, 'posts_page': page, 'next_page_url': next_page_url,
-             'previous_page_url': previous_page_url})
+             'previous_page_url': previous_page_url, 'liked_ids': liked_ids,
+             'disliked_ids': disliked_ids})
 
 
 class CreatePostView(generic.TemplateView):
