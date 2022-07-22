@@ -154,14 +154,15 @@ class FollowView(generic.TemplateView):
 
         # Check for users query, if there isn't get current following
         if 'query' in request.GET and request.GET['query']:
-            users = User.objects.filter(username__search=request.GET['query']).exclude(
+            users = User.objects.filter(
+                username__icontains=request.GET['query']).exclude(
                 id=request.user.id)
         else:
             users = request.user.following.all()
 
         # Render response
         return self.render_to_response(
-            {**base_context, 'following': users})
+            {**base_context, 'users': users})
 
     def post(self, request, user_id=None, *args, **kwargs):
         # Check for user authentication
@@ -189,7 +190,7 @@ class FollowView(generic.TemplateView):
 
         # Return response
         return self.render_to_response(
-            {**base_context, 'following': request.user.following.all()})
+            {**base_context, 'users': request.user.following.all()})
 
 
 class FeedView(generic.TemplateView):
