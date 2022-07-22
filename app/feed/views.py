@@ -28,6 +28,8 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
         'post_url': reverse_lazy('search'),
         'search_url': reverse_lazy('search'),
         'logout_url': reverse_lazy('logout'),
+        'max_content_len': Post.MAX_POST_LENGTH,
+        'max_comment_len': Comment.MAX_COMMENT_LENGTH,
         **kwargs
     }
 
@@ -50,7 +52,7 @@ class BasePostView(generic.TemplateView):
 
         # Try loading post
         try:
-            post = Post.objects.get(post_id=post_id)
+            post = Post.objects.get(id=post_id)
         except Post.DoesNotExist:
             # If post was not found, redirect to feed
             return redirect(reverse_lazy('feed'))
@@ -80,7 +82,10 @@ class LikePostView(BasePostView):
 
         # Try loading target post
         try:
-            post = Post.objects.get(post_id=post_id)
+            if not post_id:
+                raise Post.DoesNotExist()
+
+            post = Post.objects.get(id=post_id)
         except Post.DoesNotExist:
             # If post was not found, return to feed
             return redirect(reverse_lazy('feed'))
@@ -120,7 +125,7 @@ class CommentPostView(BasePostView):
 
         # Load target post
         try:
-            post = Post.objects.get(post_id=post_id)
+            post = Post.objects.get(id=post_id)
         except Post.DoesNotExist:
             # If post does not exist, return to feed
             return redirect(reverse_lazy('feed'))

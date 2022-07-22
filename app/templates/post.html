@@ -1,0 +1,200 @@
+{% extends 'blocks/base_with_nav.html' %}
+
+{% block content %}
+    <div
+        class="w-full md:w-3/4 lg:w-4/5 p-5 md:px-12 lg:24 h-full overflow-x-scroll antialiased">
+
+        {% include "blocks/search_bar.html" %}
+
+        <!-- Post -->
+        <div class="bg-white mt-3 rounded overflow-hidden" id="{{ post.id }}">
+            <section class="text-gray-600 body-font">
+                <div class="container px-5 py-6 mx-auto">
+                    <!-- User info -->
+                    <a href="{{ feed_url }}?author={{ post.author.id }}"
+                       target="_blank">
+                        <div class="flex align-center">
+                            <img class="object-cover w-12 h-12 mx-2 rounded-full"
+                                 src="{{ post.author.avatar_url }}"
+                                 alt="avatar">
+                            <div class="flex flex-col mb-2">
+                                <h4 class="font-medium text-gray-800 hover:underline">
+                                    {{ post.author.get_full_name }}</h4>
+                                <p class="font-medium text-gray-400 hover:underline">
+                                    @{{ post.author.username }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="mx-auto flex flex-nowrap lg:flex-row flex-col">
+                        <!-- Image -->
+                        <div
+                            class="object-cover object-center flex flex-1 lg:pr-2 md:mb-2">
+                            {% if post.movie.poster_url %}
+                                <a href="{{ feed_url }}?title={{ post.movie.id }}"
+                                   target="_blank">
+                                    <img alt="poster"
+                                         class="grow-0 max-w-full max-h-full w-full m-auto rounded"
+                                         src="{{ post.movie.poster_url }}">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="w-full flex-1">
+                            <!-- Film name with TMDB link -->
+                            <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 underline decoration-indigo-400 decoration-2">
+                                <a href="{{ post.movie.external_url }}"
+                                   target="_blank">
+                                    {{ post.movie.name }}
+                                </a>
+                            </h1>
+                            <!-- Star Rating -->
+                            <div class="mt-5 flex mb-4">
+                                    <span class="flex items-center">
+                          <svg
+                              {% if post.movie.vote_average >= 1 %}
+                                  fill="currentColor"
+                              {% else %}
+                                  fill="none"
+                              {% endif %}
+                                  stroke="currentColor"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" class="w-4 h-4 text-indigo-500"
+                                  viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                          <svg
+                              {% if post.movie.vote_average >= 3 %}
+                                  fill="currentColor"
+                              {% else %}
+                                  fill="none"
+                              {% endif %}
+                                  stroke="currentColor"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" class="w-4 h-4 text-indigo-500"
+                                  viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                          <svg
+                              {% if post.movie.vote_average >= 5 %}
+                                  fill="currentColor"
+                              {% else %}
+                                  fill="none"
+                              {% endif %}
+                                  stroke="currentColor"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" class="w-4 h-4 text-indigo-500"
+                                  viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                          <svg
+                              {% if post.movie.vote_average >= 7 %}
+                                  fill="currentColor"
+                              {% else %}
+                                  fill="none"
+                              {% endif %}
+                                  stroke="currentColor"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" class="w-4 h-4 text-indigo-500"
+                                  viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                          <svg
+                              {% if post.movie.vote_average >= 9 %}
+                                  fill="currentColor"
+                              {% else %}
+                                  fill="none"
+                              {% endif %}
+                                  stroke="currentColor"
+                                  stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" class="w-4 h-4 text-indigo-500"
+                                  viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                          </svg>
+                        <span
+                            class="ml-1 text-indigo-500 font-bold">{{ post.movie.vote_average }}</span>
+                        </span>
+                            </div>
+                            <!-- Content -->
+                            <p class="leading-relaxed mb-2 text-justify">
+                                {{ post.content }}
+                            </p>
+                            <div class="flex w-full justify-between">
+                                <div class="flex">
+                                    <form action="{{ post.post_like_url }}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" style="font-size:24px"><i
+                                            class="fa fa-thumbs-up p-2"></i>{{ post.like_count }}
+                                        </button>
+                                    </form>
+                                    <form action="{{ post.post_like_url }}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <input name="dislike" value="1" hidden>
+                                        <button type="submit" style="font-size:24px"><i
+                                            class="fa fa-thumbs-down p-2"></i>{{ post.dislike_count }}
+                                        </button>
+                                    </form>
+
+                                    <span style="font-size:24px"><i
+                                        class="fa fa-commenting p-2"></i>{{ post.comment_count }}
+                                    </span>
+                                </div>
+                                <a
+                                    href="{{ post.author.follow_url_search }}"
+                                    target="_blank"
+                                    class="bg-indigo-600 hover:bg-indigo-400 text-white p-2 rounded-lg">
+                                    Seguir
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Make comment text -->
+        <div class="bg-white mt-2 rounded overflow-hidden p-4">
+            <h4 class="text-lg text-gray-600">Deixar comentário:</h4>
+            <form action="{{ post.post_comment_url }}" method="post">
+                {% csrf_token %}
+                <textarea
+                    name="content"
+                    id="content-input"
+                    placeholder="Conteúdo do seu comentário"
+                    maxlength="{{ max_comment_len }}"
+                    class="w-full h-48 px-4 py-2 mt-2 resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                ></textarea>
+                <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-400 text-white p-2 rounded-lg mt-2 w-full">
+                    Comentar
+                </button>
+            </form>
+        </div>
+        <!-- Comments -->
+        {% for comment in post.comments.all %}
+            <div class="bg-white mt-2 rounded overflow-hidden p-4">
+                <div class="flex align-center">
+                    <img class="object-cover w-12 h-12 mx-2 rounded-full"
+                         src="{{ comment.author.avatar_url }}"
+                         alt="avatar">
+                    <div class="flex flex-col mb-2">
+                        <h4 class="font-medium text-gray-800 hover:underline">
+                            {{ comment.author.get_full_name }}</h4>
+                        <p class="font-medium text-gray-400 hover:underline">
+                            @{{ comment.author.username }}</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <p class="text-gray-600">
+                        {{ comment.content }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

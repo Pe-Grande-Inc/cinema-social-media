@@ -14,7 +14,7 @@ from core.models import User
 # Redirects
 
 def logged_in_redirect():
-    return redirect(reverse_lazy('search'))
+    return redirect(reverse_lazy('feed'))
 
 
 def login_redirect(*args, **kwargs):

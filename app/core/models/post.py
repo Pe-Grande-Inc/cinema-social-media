@@ -2,6 +2,7 @@ import uuid
 
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 
@@ -37,6 +38,18 @@ class Post(models.Model):
     @property
     def comment_count(self):
         return self.comments.count()
+
+    @property
+    def post_details_url(self):
+        return reverse_lazy('post-details', kwargs={'post_id': self.id})
+
+    @property
+    def post_comment_url(self):
+        return reverse_lazy('post-comment', kwargs={'post_id': self.id})
+
+    @property
+    def post_like_url(self):
+        return reverse_lazy('post-like', kwargs={'post_id': self.id})
 
     def __str__(self):
         return f'Post {self.id} from {self.author.id}'

@@ -55,17 +55,21 @@
                             <div
                                 class="object-cover object-center flex flex-1 lg:pr-2 md:mb-2">
                                 {% if post.movie.poster_url %}
-                                    <img alt="poster"
-                                         class="grow-0 max-w-full max-h-full w-full m-auto rounded"
-                                         src="{{ post.movie.poster_url }}">
+                                    <a href="{{ feed_url }}?title={{ post.movie.id }}"
+                                       target="_blank">
+                                        <img alt="poster"
+                                             class="grow-0 max-w-full max-h-full w-full m-auto rounded"
+                                             src="{{ post.movie.poster_url }}">
+                                    </a>
                                 {% endif %}
                             </div>
                             <div class="w-full flex-1">
                                 <!-- Film name with TMDB link -->
-                                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 underline decoration-indigo-400 decoration-2">
-                                    <a href="{{ feed_url }}?title={{ post.movie.id }}"
-                                       target="_blank">{{ post.movie.name }}</a>
-                                </h1>
+                                <a href="{{ post.post_details_url }}" target="_blank">
+                                    <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 underline decoration-indigo-400 decoration-2">
+                                        {{ post.movie.name }}
+                                    </h1>
+                                </a>
                                 <!-- Star Rating -->
                                 <div class="mt-5 flex mb-4">
                                     <span class="flex items-center">
@@ -143,18 +147,21 @@
                                     {{ post.content }}
                                 </p>
                                 <div class="flex w-full justify-between">
-                                    <div class="flex">
-                                        <button style="font-size:24px"><i
-                                            class="fa fa-thumbs-up p-2"></i>{{ post.like_count }}
-                                        </button>
-                                        <button style="font-size:24px"><i
-                                            class="fa fa-thumbs-down p-2"></i>{{ post.dislike_count }}
-                                        </button>
+                                    <a href="{{ post.post_details_url }}"
+                                       target="_blank">
+                                        <div class="flex">
+                                            <button style="font-size:24px"><i
+                                                class="fa fa-thumbs-up p-2"></i>{{ post.like_count }}
+                                            </button>
+                                            <button style="font-size:24px"><i
+                                                class="fa fa-thumbs-down p-2"></i>{{ post.dislike_count }}
+                                            </button>
 
-                                        <button style="font-size:24px"><i
-                                            class="fa fa-commenting p-2"></i>{{ post.comment_count }}
-                                        </button>
-                                    </div>
+                                            <button style="font-size:24px"><i
+                                                class="fa fa-commenting p-2"></i>{{ post.comment_count }}
+                                            </button>
+                                        </div>
+                                    </a>
                                     <a
                                         href="{{ post.author.follow_url_search }}"
                                         target="_blank"

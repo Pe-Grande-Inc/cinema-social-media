@@ -47,7 +47,7 @@ class TMDB:
             "w780",
             "original"
         ],
-        "base_poster_url": "https://image.tmdb.org/t/p/original/",
+        "base_poster_url": "https://image.tmdb.org/t/p/w780/",
     }
 
     def __init__(self, api_key: str = None,
