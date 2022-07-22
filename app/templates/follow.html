@@ -37,18 +37,31 @@
                                         </div>
                                     </div>
                                     <div class="flex ml-2 mt-2 lg:mt-0">
-                                        <button type="button"
-                                                class="animation duration-200 border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white p-2 rounded-lg mr-2">
+                                        <a
+                                            href="{{ feed_url }}?author={{ user.id }}"
+                                            class="animation duration-200 border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white p-2 rounded-lg mr-2">
                                             Ver Posts
-                                        </button>
-                                        <button type="button"
-                                                class="animation duration-200 border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white p-2 rounded-lg mr-2">
-                                            Seguir
-                                        </button>
-                                        <button type="button"
-                                                class="animation duration-200 border border-red-400 text-red-400 hover:bg-red-400 hover:text-white p-2 rounded-lg mr-2">
-                                            Deixar de Seguir
-                                        </button>
+                                        </a>
+                                        {% if user.id not in following_ids %}
+                                            <form method="post" action="{{ user.follow_url }}">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                    class="animation duration-200 border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-white p-2 rounded-lg mr-2">
+                                                    Seguir
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{{ user.follow_url }}">
+                                                {% csrf_token %}
+                                                <input hidden="hidden" name="remove"
+                                                       value="1">
+                                                <button
+                                                    type="submit"
+                                                    class="animation duration-200 border border-red-400 text-red-400 hover:bg-red-400 hover:text-white p-2 rounded-lg mr-2">
+                                                    Deixar de Seguir
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                     </div>
                                 </li>
                             {% endfor %}

@@ -5,15 +5,17 @@
         Cinemáticos</h2>
 
     <!-- User info -->
-    <div class="flex flex-col items-center mt-6 -mx-2">
+    <a
+        href="{{ user.feed_url }}"
+        class="block flex flex-col items-center mt-6 -mx-2">
         <img class="object-cover w-24 h-24 mx-2 rounded-full"
              src="{{ user_avatar_url }}"
              alt="your avatar">
-        <h4 class="mx-2 mt-2 font-medium text-gray-200 hover:underline">
+        <h4 class="mx-2 mt-2 font-medium text-gray-200 hover:underline px-4 text-center">
             {{ user_fullname }}</h4>
-        <p class="mx-2 mt-1 text-sm font-medium text-gray-400 hover:underline">
+        <p class="mx-2 mt-1 text-sm font-medium text-gray-400 hover:underline truncate">
             @{{ username }}</p>
-    </div>
+    </a>
 
     <div class="flex flex-col justify-between flex-auto mt-6">
         <nav>

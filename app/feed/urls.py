@@ -7,4 +7,5 @@ urlpatterns = [
     path('new-post/<str:title_id>/', CreatePostView.as_view(), name="new-post"),
     path('feed/', FeedView.as_view(), name="feed"),
     path('follow/', FollowView.as_view(), name="follow"),
+    path('follow/<str:user_id>/', FollowView.as_view(), name="follow-user"),
 ]

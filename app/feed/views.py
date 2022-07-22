@@ -19,6 +19,7 @@ def load_base_context(request: HttpRequest, active_tab=None, page_title=None, **
     return {
         'active_tab': active_tab,
         'page_title': page_title,
+        "user": request.user,
         'username': request.user.username,
         'user_fullname': request.user.get_full_name(),
         "user_avatar_url": request.user.avatar_url,
@@ -152,17 +153,25 @@ class FollowView(generic.TemplateView):
         base_context = load_base_context(request, active_tab='follow',
                                          page_title='Seguindo')
 
+        # Following users
+        following = request.user.following.all()
+
         # Check for users query, if there isn't get current following
         if 'query' in request.GET and request.GET['query']:
             users = User.objects.filter(
                 username__icontains=request.GET['query']).exclude(
                 id=request.user.id)
+        elif 'user_id' in request.GET and request.GET['user_id']:
+            users = User.objects.filter(id=request.GET['user_id']).exclude(
+                id=request.user.id)
         else:
-            users = request.user.following.all()
+            users = following
+
+        following_ids_set = {user.id for user in following}
 
         # Render response
         return self.render_to_response(
-            {**base_context, 'users': users})
+            {**base_context, 'users': users, 'following_ids': following_ids_set})
 
     def post(self, request, user_id=None, *args, **kwargs):
         # Check for user authentication
@@ -175,7 +184,7 @@ class FollowView(generic.TemplateView):
 
         # Try loading target user
         try:
-            target_user = User.objects.get(user_id=user_id)
+            target_user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             # If user does not exist return error
             return self.render_to_response(
@@ -184,8 +193,10 @@ class FollowView(generic.TemplateView):
 
         # Handle follow/unfollow
         if 'remove' in request.POST:
+            print('remove')
             request.user.following.remove(target_user)
         else:
+            print('add')
             request.user.following.add(target_user)
 
         # Return response
@@ -235,7 +246,7 @@ class FeedView(generic.TemplateView):
                 pass
 
         # Load posts for given filters
-        posts = Post.objects.filter(**filters).order_by('creation_date')
+        posts = Post.objects.filter(**filters).order_by('-creation_date')
 
         # Paginate response
         paginator = Paginator(posts, 20)
