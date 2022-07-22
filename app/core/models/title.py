@@ -111,6 +111,10 @@ class Title(models.Model):
     def create_post_url(self):
         return reverse_lazy('new-post', kwargs={'title_id': str(self.id)})
 
+    @property
+    def related_posts_url(self):
+        return reverse_lazy('feed') + f"?title={self.id}"
+
     class Meta:
         verbose_name = _('título')
         verbose_name_plural = _('títulos')
