@@ -1,7 +1,7 @@
 <!-- Begin Navbar -->
 <div
     class="flex flex-col w-64 h-screen py-8 border-r bg-gray-800 border-gray-600">
-    <h2 class="text-3xl font-semibold text-center text-gray-800 text-white">
+    <h2 class="text-3xl font-semibold text-center text-white">
         Cinemáticos</h2>
 
     <!-- User info -->
@@ -74,6 +74,19 @@
                 <span class="mx-4 font-medium text-gray-500">Sair</span>
             </a>
         </nav>
+    </div>
+
+    <div class="mt-auto text-gray-200 text-xs md:text-sm px-2">
+        <p class="mt-2">
+            Créditos: D. H. Lelis & Eduardo Garcia
+        </p>
+        <div class="mt-1 text-xs flex items-center text-justify text-gray-400">
+            <div class="w-36 mr-2">
+                {% include "blocks/tmdb_logo.html" %}
+            </div>
+            Esse produto usa a API do TMDB, mas não é endorsado ou certificado pelo
+            TMDB.
+        </div>
     </div>
 </div>
 
