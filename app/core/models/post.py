@@ -53,3 +53,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Post {self.id} from {self.author.id}'
+
+    class Meta:
+        verbose_name = _('post')
+        verbose_name_plural = _('posts')

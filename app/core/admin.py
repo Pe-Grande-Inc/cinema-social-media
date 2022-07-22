@@ -12,5 +12,4 @@ class UserAdmin(UserAdmin):
 admin.site.register(models.Post)
 admin.site.register(models.PostRating)
 admin.site.register(models.Comment)
-admin.site.register(models.Genre)
 admin.site.register(models.Title)

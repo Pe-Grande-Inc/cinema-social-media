@@ -60,9 +60,6 @@ TEMPLATES = [
         },
     },
 ]
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
 
 WSGI_APPLICATION = 'cinema_social_media.wsgi.application'
 
@@ -83,7 +80,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = 'pt-BR'
 
 TIME_ZONE = 'UTC'
 

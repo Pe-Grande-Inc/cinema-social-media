@@ -110,3 +110,7 @@ class Title(models.Model):
     @property
     def create_post_url(self):
         return reverse_lazy('new-post', kwargs={'title_id': str(self.id)})
+
+    class Meta:
+        verbose_name = _('título')
+        verbose_name_plural = _('títulos')
