@@ -99,3 +99,8 @@ Due to the timelines, we had to sacrifice some things we'd like to implement, na
       user.
 3. Implement actual i18n support for both pt-BR and en-US. Currently, only pt-BR is
    available.
+
+## Authors
+
+- Daniel Henrique Lelis de Almeida
+- Eduardo Garcia de Gaspari Valdejao
