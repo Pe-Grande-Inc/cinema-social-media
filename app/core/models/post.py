@@ -26,5 +26,17 @@ class Post(models.Model):
     last_edited = models.DateTimeField(auto_now=True, verbose_name=_('data de edição'),
                                        help_text=_('data da última edição'))
 
+    @property
+    def like_count(self):
+        return self.ratings.filter(positive=True).count()
+
+    @property
+    def dislike_count(self):
+        return self.ratings.filter(positive=False).count()
+
+    @property
+    def comment_count(self):
+        return self.comments.count()
+
     def __str__(self):
         return f'Post {self.id} from {self.author.id}'
