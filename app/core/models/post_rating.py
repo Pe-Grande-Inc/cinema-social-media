@@ -22,10 +22,6 @@ class PostRating(models.Model):
                                          verbose_name=_('data de criação'),
                                          help_text=_('Data de criação da avaliação'))
 
-    @property
-    def is_edited(self):
-        return self.creation_date != self.last_edited
-
     class Meta:
         verbose_name = _('avaliação')
         verbose_name_plural = _('avaliações')
