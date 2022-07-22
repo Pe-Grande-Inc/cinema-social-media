@@ -49,7 +49,7 @@ class LoginView(generic.TemplateView):
 
     def post(self, request: HttpRequest, *args, **kwargs):
         """
-        Create new user from given data
+        Authenticate user
         """
         try:
             # Validate fields presence
